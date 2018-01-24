@@ -18,11 +18,12 @@ This repo is based upon [@anatolix](https://github.com/anatolix)'s repo [keras_R
 
 Please download the COCO dataset and the official COCO evaluation API. Go to folder `dataset` and simply run the following commands:
 
+    $ cd dataset
     $ ./step1_download_coco2014.sh
     $ ./step2_setup_coco_api.sh
 
 
-## Preparing Training Data 
+## Prepare Training Data 
 
 Before model training, we need to convert the images to the specific data format. We first generate the associated heatmaps, part affinity maps, and then convert them to HDF5 file format. Go to the folder `training`, and run the scripts. The process takes about 
 
@@ -47,7 +48,7 @@ Evaluation codes and instructions coming soon!
 
 ## Summary of the Evaluation
 
-We empirically trained the model with `100 epochs` and achieved comparable performance to the results reported in the original paper. We also compared with the original caffe implementation which is [online avialable](https://github.com/michalfaber/keras_Realtime_Multi-Person_Pose_Estimation#converting-caffe-model-to-keras-model). Note the validation set `COCO2014-1K` can be found in [original authors' caffe implementation](https://github.com/ZheC/caffe_rtpose/blob/master/image_info_val2014_1k.txt).
+We empirically trained the model with `100 epochs` and achieved comparable performance to the results reported in the original paper. We also compared with the original caffe implementation which is [online avialable](https://github.com/michalfaber/keras_Realtime_Multi-Person_Pose_Estimation#converting-caffe-model-to-keras-model). Note the validation set `COCO2014-Val-1K` can be found in [original authors' caffe implementation](https://github.com/ZheC/caffe_rtpose/blob/master/image_info_val2014_1k.txt).
 
 
 |     Method      |       Validation      |     AP    | 
@@ -61,8 +62,8 @@ We also evaluated the performance on the full COCO2014 validation set.
 
 |     Method      |       Validation      |     AP    | 
 |-----------------|:---------------------:|:---------:|  
-|  [Openpose model](https://github.com/michalfaber/keras_Realtime_Multi-Person_Pose_Estimation#converting-caffe-model-to-keras-model) |    COCO2014-Val-1k    |    58.9   |    
-|    This repo    |    COCO2014-Val-1k    |    59.0   |   
+|  [Openpose model](https://github.com/michalfaber/keras_Realtime_Multi-Person_Pose_Estimation#converting-caffe-model-to-keras-model) |      COCO2014-Val     |    58.9   |    
+|    This repo    |      COCO2014-Val     |    59.0   |   
 
 
 

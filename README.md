@@ -63,8 +63,9 @@ We also evaluated the performance on the full COCO2014 validation set.
 |    This repo    |      COCO2014-Val     |    59.0   |   
 
 
-You may find our trained model at [Dropbox](https://www.dropbox.com/s/76b3r8rj82wicik/weights.0100.h5?dl=0)
-You may also find our prediction results on COCO2014 validation (json format w/o images) [Dropbox](https://www.dropbox.com/s/snaot6xva6ei5ge/val2014_ours_result.json?dl=0)
+You may find our trained model at: [Dropbox](https://www.dropbox.com/s/76b3r8rj82wicik/weights.0100.h5?dl=0)
+
+You may also find our prediction results on COCO2014 validation (json format w/o images): [Dropbox](https://www.dropbox.com/s/snaot6xva6ei5ge/val2014_ours_result.json?dl=0)
 
 
 ## Acknowledgment

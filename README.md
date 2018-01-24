@@ -10,7 +10,7 @@ This repo is based upon [@anatolix](https://github.com/anatolix)'s repo [keras_R
 
   0. Keras and Tensorflow (tested on Linux machine)
   0. Python3
-  0. GPU with at least 11GB memory
+  0. GPU with at least `11GB` memory
   0. More than `250GB` of disk space free for training data
 
 
@@ -25,7 +25,7 @@ Please download the COCO dataset and the official COCO evaluation API. Go to fol
 
 ## Prepare Training Data 
 
-Before model training, we need to convert the images to the specific data format. We first generate the associated heatmaps, part affinity maps, and then convert them to HDF5 file format. Go to the folder `training`, and run the scripts. The process takes about 
+Before model training, we need to convert the images to the specific data format. We first generate the heatmaps, part affinity maps, and then convert them to HDF5 file format. Go to the folder `training`, and run the scripts.
 
     $ cd training
     $ python3 generate_masks_coco2014.py

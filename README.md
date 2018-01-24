@@ -25,7 +25,7 @@ Please download the COCO dataset and the official COCO evaluation API. Go to fol
 
 ## Prepare Training Data 
 
-Before model training, we need to convert the images to the specific data format. We first generate the heatmaps, part affinity maps, and then convert them to HDF5 file format. Go to the folder `training`, and run the scripts.
+Before model training, we need to convert the images to the specific data format. We first generate the heatmaps, part affinity maps, and then convert them to HDF5 file format. Go to the folder `training`, and run the scripts:
 
     $ cd training
     $ python3 generate_masks_coco2014.py
@@ -48,7 +48,7 @@ Evaluation codes and instructions coming soon!
 
 ## Summary of the Evaluation
 
-We empirically trained the model with `100 epochs` and achieved comparable performance to the results reported in the original paper. We also compared with the original caffe implementation which is [online avialable](https://github.com/michalfaber/keras_Realtime_Multi-Person_Pose_Estimation#converting-caffe-model-to-keras-model). Note the validation set `COCO2014-Val-1K` can be found in [original authors' caffe implementation](https://github.com/ZheC/caffe_rtpose/blob/master/image_info_val2014_1k.txt).
+We empirically trained the model with `100 epochs` and achieved comparable performance to the results reported in the original paper. We also compared with the original implementation which is [online avialable](https://github.com/michalfaber/keras_Realtime_Multi-Person_Pose_Estimation#converting-caffe-model-to-keras-model). Note the validation set `COCO2014-Val-1K` can be found in the [original caffe implementation](https://github.com/CMU-Perceptual-Computing-Lab/caffe_rtpose/blob/master/image_info_val2014_1k.txt).
 
 
 |     Method      |       Validation      |     AP    | 

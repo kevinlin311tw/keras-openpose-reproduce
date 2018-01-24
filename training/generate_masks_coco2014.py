@@ -1,3 +1,4 @@
+import sys
 sys.path.append('../dataset/cocoapi/PythonAPI')
 import os
 import cv2
@@ -21,7 +22,7 @@ def preproc(mode):
         ann_ids = coco.getAnnIds(imgIds=img_id)
         img_anns = coco.loadAnns(ann_ids)
 
-        img_path = os.path.join(val_images_dir, "%012d.jpg" % img_id)
+        img_path = os.path.join(val_images_dir, "COCO_%s2014_%012d.jpg" %(mode,img_id))
         mask_miss_path = os.path.join(val_masks_dir, "mask_miss_%012d.png" % img_id)
         mask_all_path = os.path.join(val_masks_dir, "mask_all_%012d.png" % img_id)
 

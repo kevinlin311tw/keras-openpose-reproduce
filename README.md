@@ -28,7 +28,7 @@ Before model training, we convert the images to the specific data format for eff
     $ python3 generate_masks_coco2014.py
     $ python3 generate_hdf5_coco2014.py
 
-After the pre-processing, you will find the files `train_dataset_2014.h5` and `val_dataset_2014.h5`. The files are about `182GB` and `3.8GB`, respectively.
+After this, you will generate `train_dataset_2014.h5` and `val_dataset_2014.h5`. The files are about `182GB` and `3.8GB`, respectively.
 
 ## Training
 

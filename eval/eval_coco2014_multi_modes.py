@@ -456,7 +456,7 @@ def process_single_scale (input_image, model, params, model_params):
     return canvas, candidate, subset, conv_cost, post_proc_cost      
 
 
-def compute_keypoints(model_weights_file, logs_file, cocoGt, coco_api_dir, coco_data_type, eval_method, epoch_num, refine_radius):
+def compute_keypoints(model_weights_file, cocoGt, coco_api_dir, coco_data_type, eval_method, epoch_num):
     # load model
     model = get_testing_model()
     model.load_weights(model_weights_file)
@@ -478,7 +478,7 @@ def compute_keypoints(model_weights_file, logs_file, cocoGt, coco_api_dir, coco_
     # prepare json output
     json_file = open(args.outputjson,'w')
 
-    output_folder = './results/val2014-ours-epoch%d-%s_radius%d-new'%(trained_epoch,mode_name,refine_radius)
+    output_folder = './results/val2014-ours-epoch%d-%s'%(trained_epoch,mode_name)
     if not os.path.exists(output_folder):
 	   os.mkdir(output_folder)
 
@@ -494,8 +494,6 @@ def compute_keypoints(model_weights_file, logs_file, cocoGt, coco_api_dir, coco_
     candidate_set = []
     subset_set = []
     image_id_set = []
-    avg_post_proc = 0
-    avg_conv = 0
     counter = 0
     # run keypoints detection per image
     for item in imgIds:
@@ -506,36 +504,18 @@ def compute_keypoints(model_weights_file, logs_file, cocoGt, coco_api_dir, coco_
         print ('Image file exist? %s')%(os.path.isfile(input_fname)) 
 
         # run keypoint detection
-        # val_tic = time.time()
-        if eval_method==2:
-            visual_result, candidate, subset, conv_cost, post_cost  = process_msr_method(input_fname, model, params, model_params, refine_radius)
-            avg_conv += conv_cost
-            avg_post_proc += post_cost
         if eval_method==1:
             visual_result, candidate, subset= process_multi_scale(input_fname, model, params, model_params)
         elif eval_method==0:
             visual_result, candidate, subset, conv_cost, post_cost = process_single_scale(input_fname, model, params, model_params)
-            avg_conv += conv_cost
-            avg_post_proc += post_cost
-
-        # val_toc = time.time()
-        # print ('per image processing time is %.5f' % (val_toc - val_tic))
 
         # draw results       
         output_fname = '%s/result_%s'%(prediction_folder,fname)
         cv2.imwrite(output_fname, visual_result)
         candidate_set.append(candidate)
         subset_set.append(subset)
-        image_id_set.append(item)
-        
+        image_id_set.append(item)  
         counter = counter + 1
-    # code.interact(local=locals()) 
-
-    if eval_method==2 or eval_method==0:
-        avg_conv = avg_conv/counter
-        avg_post_proc = avg_post_proc/counter
-        print("average conv time per image: %.5f")%(avg_conv)
-        print("average post proc time per image: %.5f")%(avg_post_proc)
 
     # dump results to json file
     write_json(candidate_set, subset_set, image_id_set, json_file)
@@ -610,19 +590,13 @@ if __name__ == '__main__':
     epoch_num = 100
     model_file = '../training/weights/weights.%04d.h5'%(epoch_num)
     parser.add_argument('--model', type=str, default=model_file, help='path to the weights file')
-    parser.add_argument('--logs', type=str, default='../training/training.csv', help='path to the logs file')
-
     parser.add_argument('--outputjson', type=str, default='val2014_result.json', help='path to the json file for coco eval')
     parser.add_argument('--coco_dataType', type=str, default='val2014', help='val2017 or val2014')
     parser.add_argument('--coco_api_dir', type=str, default='../dataset/cocoapi', help='path to coco api')
     parser.add_argument('--eval_method', type=int, default=0, help='open-pose-single-scale: 0, open-pose-multi-scale: 1')
-    parser.add_argument('--radius', type=int, default=0, help='refine radius')
-
 
     args = parser.parse_args()
     keras_weights_file = args.model
-    logs_file = args.logs
-    refine_radius = args.radius
     # load coco eval api
     pylab.rcParams['figure.figsize'] = (10.0, 8.0)
     annType = 'keypoints'
@@ -632,11 +606,9 @@ if __name__ == '__main__':
     #initialize COCO ground truth api
     annFile = '%s/annotations/%s_%s.json'%(args.coco_api_dir, prefix, args.coco_dataType)
     cocoGt = COCO(annFile)
-    # code.interact(local=locals())
     tic = time.time()
     print('start processing...')
-
-    json_path = compute_keypoints(keras_weights_file, logs_file, cocoGt, args.coco_api_dir, args.coco_dataType, args.eval_method, epoch_num, refine_radius)
+    json_path = compute_keypoints(keras_weights_file, cocoGt, args.coco_api_dir, args.coco_dataType, args.eval_method, epoch_num)
     toc = time.time()
     total_time = toc - tic
     print ('overall processing time is %.5f' % (toc - tic))

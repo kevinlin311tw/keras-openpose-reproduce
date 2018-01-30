@@ -21,7 +21,6 @@ import os
 import os.path
 import pandas
 
-# []
 # orderCOCO = [1,0, 7,9,11, 6,8,10, 13,15,17, 12,14,16, 3,2,5,4]
 orderCOCO = [0,1, 15,14,17,16, 5,2,6,3,7,4, 11,8,12,9,13,10]
 
@@ -55,10 +54,6 @@ def load_cmu_val1k(mode):
             flist.append(line.split()[mode])
     return flist
 
-def get_last_epoch(training_log):
-    print 'load training log: %s'%(training_log)
-    data = pandas.read_csv(training_log)
-    return max(data['epoch'].values)
 
 def process_multi_scale (input_image, model, params, model_params):
 
@@ -236,13 +231,13 @@ def process_multi_scale (input_image, model, params, model_params):
     subset = np.delete(subset, deleteIdx, axis=0)
 
 
+    # draw all possible peaks
     canvas = cv2.imread(input_image)  # B,G,R order
-    
     for i in range(18):
         for j in range(len(all_peaks[i])):
             cv2.circle(canvas, all_peaks[i][j][0:2], 4, colors[i], thickness=-1)
     
-
+    # draw all detected skeletons 
     stickwidth = 4
 
     for i in range(17):
@@ -271,13 +266,9 @@ def process_single_scale (input_image, model, params, model_params):
 
     heatmap_ori_size = np.zeros((oriImg.shape[0], oriImg.shape[1], 19))
     paf_ori_size = np.zeros((oriImg.shape[0], oriImg.shape[1], 38))
-
     input_img = np.transpose(np.float32(oriImg[:,:,:,np.newaxis]), (3,0,1,2)) # required shape (1, width, height, channels)
 
-    conv_tic = time.time()
     output_blobs = model.predict(input_img)
-    conv_toc = time.time()
-    conv_cost = conv_toc - conv_tic
 
     # extract outputs, resize, and remove padding
     heatmap = np.squeeze(output_blobs[1])  # output 1 is heatmaps
@@ -286,7 +277,6 @@ def process_single_scale (input_image, model, params, model_params):
     heatmap_ori_size = cv2.resize(heatmap, (oriImg.shape[1], oriImg.shape[0]), interpolation=cv2.INTER_CUBIC)
     paf_ori_size = cv2.resize(paf, (oriImg.shape[1], oriImg.shape[0]), interpolation=cv2.INTER_CUBIC)
 
-    post_proc_tic = time.time()
     all_peaks = []
     peak_counter = 0
 
@@ -423,18 +413,16 @@ def process_single_scale (input_image, model, params, model_params):
         if subset[i][-1] < 4 or subset[i][-2] / subset[i][-1] < 0.4:
             deleteIdx.append(i)
     subset = np.delete(subset, deleteIdx, axis=0)
-    post_proc_toc = time.time()
-    post_proc_cost = post_proc_toc - post_proc_tic
 
     canvas = cv2.imread(input_image)  # B,G,R order
-    
+
+    # draw all possible peaks
     for i in range(18):
         for j in range(len(all_peaks[i])):
             cv2.circle(canvas, all_peaks[i][j][0:2], 4, colors[i], thickness=-1)
     
-
+    # draw all detected skeletons
     stickwidth = 4
-
     for i in range(17):
         for n in range(len(subset)):
             index = subset[n][np.array(limbSeq[i]) - 1]
@@ -452,8 +440,7 @@ def process_single_scale (input_image, model, params, model_params):
             cv2.fillConvexPoly(cur_canvas, polygon, colors[i])
             canvas = cv2.addWeighted(canvas, 0.4, cur_canvas, 0.6, 0)
     
-
-    return canvas, candidate, subset, conv_cost, post_proc_cost      
+    return canvas, candidate, subset
 
 
 def compute_keypoints(model_weights_file, cocoGt, coco_api_dir, coco_data_type, eval_method, epoch_num):
@@ -507,7 +494,7 @@ def compute_keypoints(model_weights_file, cocoGt, coco_api_dir, coco_data_type, 
         if eval_method==1:
             visual_result, candidate, subset= process_multi_scale(input_fname, model, params, model_params)
         elif eval_method==0:
-            visual_result, candidate, subset, conv_cost, post_cost = process_single_scale(input_fname, model, params, model_params)
+            visual_result, candidate, subset = process_single_scale(input_fname, model, params, model_params)
 
         # draw results       
         output_fname = '%s/result_%s'%(prediction_folder,fname)
@@ -556,8 +543,6 @@ def write_json(candidate_set, subset_set, image_id_set, json_file):
                 json_dict = {"image_id":image_id_set[i], "category_id":category_id, "keypoints": keypoints,"score":score}             
                 output_data.append(json_dict)
         json.dump(output_data,outfile)
-    # code.interact(local=locals()) 
-
 
 def run_eval_metric(cocoGt, prediction_json, total_time, full_eval):
     #initialize COCO detections api

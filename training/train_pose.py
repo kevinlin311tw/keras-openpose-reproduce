@@ -116,8 +116,8 @@ def eucl_loss(x, y):
     return l
 
 # prepare generators
-train_client = DataIterator("../dataset/train_dataset_2014_new.h5", shuffle=True, augment=True, batch_size=batch_size)
-val_client = DataIterator("../dataset/val_dataset_2014_new.h5", shuffle=False, augment=False, batch_size=batch_size)
+train_client = DataIterator("../dataset/train_dataset_2014.h5", shuffle=True, augment=True, batch_size=batch_size)
+val_client = DataIterator("../dataset/val_dataset_2014.h5", shuffle=False, augment=False, batch_size=batch_size)
 
 train_di = train_client.gen()
 train_samples = 117576

@@ -10,6 +10,11 @@ This is a keras implementation of [Realtime Multi-Person Pose Estimation](https:
   0. GPU with at least `11GB` memory
   0. More than `250GB` of disk space for training data
 
+Please also install the following packages:
+
+    $ sudo apt-get install libboost-all-dev libhdf5-serial-dev libzmq3-dev libopencv-dev python-opencv python3-tk
+    $ sudo pip3 install Cython scikit-image pandas zmq h5py opencv-python
+
 
 ## Download COCO 2014 Dataset
 

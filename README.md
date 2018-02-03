@@ -12,8 +12,8 @@ This is a keras implementation of [Realtime Multi-Person Pose Estimation](https:
 
 Please also install the following packages:
 
-    $ sudo apt-get install libboost-all-dev libhdf5-serial-dev libzmq3-dev libopencv-dev python-opencv python3-tk
-    $ sudo pip3 install Cython scikit-image pandas zmq h5py opencv-python
+    $ sudo apt-get install libboost-all-dev libhdf5-serial-dev libzmq3-dev libopencv-dev python-opencv python3-tk python-imaging
+    $ sudo pip3 install Cython scikit-image pandas zmq h5py opencv-python IPython configobj
 
 
 ## Download COCO 2014 Dataset
@@ -45,7 +45,11 @@ Simply go to folder `training` and run the training script:
 
 ## Evaluation on COCO Keypoint Datasets
 
-Evaluation codes and instructions coming soon!
+Please go to folder `eval` and run the evaluation script. `eval_model=0`: single-scale evaluation. `eval_model=1`: multi-scale evaluation (as described in Openpose's paper).
+
+    $ cd eval
+    $ python3 eval_coco2014_multi_modes.py --eval_method 0
+    $ python3 eval_coco2014_multi_modes.py --eval_method 1
 
 
 ## Evaluation Summary

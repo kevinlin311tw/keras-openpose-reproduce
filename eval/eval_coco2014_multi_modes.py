@@ -465,9 +465,12 @@ def compute_keypoints(model_weights_file, cocoGt, coco_api_dir, coco_data_type, 
     # prepare json output
     json_file = open(args.outputjson,'w')
 
+    if not os.path.exists('./results'):
+        os.mkdir('./results')
+
     output_folder = './results/val2014-ours-epoch%d-%s'%(trained_epoch,mode_name)
     if not os.path.exists(output_folder):
-	   os.mkdir(output_folder)
+        os.mkdir(output_folder)
 
     prediction_folder = '%s/predictions'%(output_folder)
     if not os.path.exists(prediction_folder):
@@ -486,9 +489,9 @@ def compute_keypoints(model_weights_file, cocoGt, coco_api_dir, coco_data_type, 
     for item in imgIds:
         # load image fname
         fname = cocoGt.imgs[item]['file_name']
-        input_fname = '%s/images/%s/%s'%(coco_api_dir,coco_data_type,fname)
-        print input_fname
-        print ('Image file exist? %s')%(os.path.isfile(input_fname)) 
+        input_fname = '../dataset/%s/%s'%(coco_data_type,fname)
+        print (input_fname)
+        print ('Image file exist? %s'% os.path.isfile(input_fname)) 
 
         # run keypoint detection
         if eval_method==1:
@@ -554,7 +557,7 @@ def run_eval_metric(cocoGt, prediction_json, total_time, full_eval):
     imgIds = sorted(cocoGt.getImgIds())
     out_prefix = 'full'
     if full_eval==False:
-	out_prefix = '1k'
+        out_prefix = '1k'
         imgIds = load_cmu_val1k(mode=1)
 
     cocoEval.params.imgIds = imgIds
@@ -586,10 +589,10 @@ if __name__ == '__main__':
     pylab.rcParams['figure.figsize'] = (10.0, 8.0)
     annType = 'keypoints'
     prefix = 'person_keypoints'
-    print 'COCO eval for *%s* results.'%(annType)
+    print ('COCO eval for %s results.'%annType)
 
     #initialize COCO ground truth api
-    annFile = '%s/annotations/%s_%s.json'%(args.coco_api_dir, prefix, args.coco_dataType)
+    annFile = ('../dataset/annotations/%s_%s.json'%( prefix, args.coco_dataType))
     cocoGt = COCO(annFile)
     tic = time.time()
     print('start processing...')

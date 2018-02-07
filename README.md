@@ -61,7 +61,7 @@ We empirically trained the model for `100 epochs (2 weeks)` and achieved compara
 |-----------------|:---------------------:|:---------:|
 |  [Openpose paper](https://arxiv.org/pdf/1611.08050.pdf) |  COCO2014-Val-1k   |    58.4   | 
 |  [Openpose model](https://github.com/michalfaber/keras_Realtime_Multi-Person_Pose_Estimation#converting-caffe-model-to-keras-model) |    COCO2014-Val-1k    |    56.3   |     
-|    This repo    |    COCO2014-Val-1k    |    58.9   |
+|    This repo    |    COCO2014-Val-1k    |    58.2   |
 
 
 We also evaluated the performance on the full COCO2014 validation set.

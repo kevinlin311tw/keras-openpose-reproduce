@@ -1,5 +1,6 @@
 import sys
-sys.path.append('../dataset/cocoapi/PythonAPI')
+# sys.path.append('../dataset/cocoapi/PythonAPI')
+sys.path.append('/data/dataset/cocoapi/PythonAPI')
 import os
 import cv2
 import numpy as np
@@ -7,9 +8,9 @@ from pycocotools.coco import COCO
 
 def preproc(mode):
     
-    dataset_dir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'dataset'))
+    dataset_dir = '/data/dataset'#os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'dataset'))
 
-    val_anno_path = os.path.join(dataset_dir, "annotations/person_keypoints_%s2014.json" % mode)
+    val_anno_path = os.path.join(dataset_dir, "cocoapi/annotations/person_keypoints_%s2014.json" % mode)
     val_images_dir = os.path.join(dataset_dir, "%s2014" % mode)
     val_masks_dir = os.path.join(dataset_dir, "%smask2014" % mode)
 
